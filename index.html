@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+    <meta content="utf-8" http-equiv="encoding" />
+
+    <link rel="shortcut icon" href="#" />
+    <div>
+      <input type="text" onfocus="this.value=''" id="input-form" />
+      <input disabled type="text" id="output-form" value="" />
+      <input type="submit" value="submit" onClick="onClick();" />
+    </div>
+
+      <script>
+
+        function onClick() {
+          let xhr = new XMLHttpRequest();
+          xhr.open("POST", "http://localhost:8000/test");
+          xhr.setRequestHeader("Accept", "application/json");
+          xhr.setRequestHeader("Content-Type", "application/json");
+
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+              console.log(xhr.status);
+              console.log(xhr.responseText);
+
+              let object = JSON.parse(xhr.response);
+              let returnString = object.return_string;
+
+              document.getElementById("output-form").value = returnString
+            }
+          };
+
+          let input = document.getElementById("input-form").value;
+          
+          var data = {
+            string_to_cut: input,
+          };
+          
+          xhr.send(JSON.stringify(data));
+
+        }
+
+      </script>
+    </body>
+  </head>
+</html>
